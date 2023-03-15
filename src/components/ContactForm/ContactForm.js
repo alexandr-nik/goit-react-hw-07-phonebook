@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import toast, { Toaster } from 'react-hot-toast';
 import { addContact } from 'redux/operations';
 import { getContacts } from 'redux/selector';
 import {
@@ -11,6 +12,7 @@ import {
   PhonebookButton,
 } from './ContactForm.styled';
 
+const notify = (message) => toast(message);
 
 export const ContactForm = () => {
   const contacts = useSelector(getContacts);
@@ -31,7 +33,7 @@ export const ContactForm = () => {
     };
     const newName = contact.name.toLowerCase();
     if (contacts.filter(elem => elem.name.toLowerCase() === newName).length) {
-      alert(`${newName} is alredy in contacts`);
+      notify(`${newName} is alredy in contacts`);
       return;
     }
     dispatch(addContact(contact));
@@ -70,6 +72,7 @@ export const ContactForm = () => {
         </PhonebookLable>
         <PhonebookButton type="submit">Add contact</PhonebookButton>
       </PhonebookForm>
+      <Toaster/>
     </Phonebook>
   );
 };
