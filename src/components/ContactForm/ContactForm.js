@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/operations';
+import { getContacts } from 'redux/selector';
 import {
   Phonebook,
   PhonebookTitle,
@@ -9,12 +10,11 @@ import {
   PhonebookInput,
   PhonebookButton,
 } from './ContactForm.styled';
-import { addContacts } from 'components/redux/operations';
-import { getContacts } from 'components/redux/selector';
 
-export const ContactsForm = () => {
-  const contacts = useSelector(getContacts) 
-  const dispatch = useDispatch()
+
+export const ContactForm = () => {
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
   const [newContact, setNewContact] = useState({ addName: '', addNumber: '' });
   const { addName, addNumber } = newContact;
 
@@ -26,17 +26,16 @@ export const ContactsForm = () => {
   const formSubmit = e => {
     e.preventDefault();
     const contact = {
-      id: nanoid(),
       name: addName,
-      number: addNumber,
-    }; 
+      phone: addNumber,
+    };
     const newName = contact.name.toLowerCase();
     if (contacts.filter(elem => elem.name.toLowerCase() === newName).length) {
       alert(`${newName} is alredy in contacts`);
       return;
     }
-    dispatch(addContacts(contact))
-    setNewContact({ addName: '', addNumber: '' }) 
+    dispatch(addContact(contact));
+    setNewContact({ addName: '', addNumber: '' });
   };
 
   return (
